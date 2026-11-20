@@ -106,8 +106,18 @@ jobs:
 
       - name: Refresh config after feeds
         run: |
+          cat > .config <<'EOF'
+          CONFIG_TARGET_airoha=y
+          CONFIG_TARGET_airoha_an7581=y
+          CONFIG_TARGET_DEVICE_airoha_an7581_DEVICE_nokia_xg-040g-md-ubi=y
+          CONFIG_TARGET_airoha_an7581_DEVICE_nokia_xg-040g-md-ubi=y
+          CONFIG_PACKAGE_kmod-airoha-xpon-en757x=y
+          CONFIG_PACKAGE_kmod-i2c-core=y
+          CONFIG_PACKAGE_dropbear=y
+          CONFIG_PACKAGE_uboot-envtools=y
+          EOF
           FORCE=1 make defconfig
-          grep -E 'airoha.*(xpon|gpon)' .config || true
+          grep -E 'TARGET_DEVICE_airoha_an7581|airoha.*(xpon|gpon)' .config || true
 
       - name: Verify GPON-A config
         run: |
