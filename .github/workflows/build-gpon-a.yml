@@ -33,7 +33,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v6
         with:
-          fetch-depth: 1
+          fetch-depth: 0
           ref: gpon-a
 
       - name: Free build space
@@ -77,7 +77,7 @@ jobs:
           CONFIG_PACKAGE_dropbear=y
           CONFIG_PACKAGE_uboot-envtools=y
           EOF
-          make defconfig
+          FORCE=1 make defconfig
           grep -E 'TARGET_DEVICE_airoha_an7581|airoha.*(xpon|gpon)|kmod-i2c-core' .config || true
 
       - name: Install feeds
@@ -95,7 +95,7 @@ jobs:
 
       - name: Refresh config after feeds
         run: |
-          make defconfig
+          FORCE=1 make defconfig
           grep -E 'airoha.*(xpon|gpon)' .config || true
 
       - name: Download sources
