@@ -82,6 +82,15 @@ jobs:
           FORCE=1 make defconfig
           grep -E 'TARGET_DEVICE_airoha_an7581|airoha.*(xpon|gpon)|kmod-i2c-core' .config || true
 
+      - name: Point feeds at GitHub mirrors
+        run: |
+          cat > feeds.conf.default <<'EOF'
+          src-git packages https://github.com/coolsnowwolf/packages.git
+          src-git luci https://github.com/coolsnowwolf/luci.git
+          src-git routing https://github.com/coolsnowwolf/routing.git
+          src-git telephony https://github.com/coolsnowwolf/telephony.git
+          EOF
+
       - name: Install feeds
         run: |
           retry() {
@@ -99,6 +108,11 @@ jobs:
         run: |
           FORCE=1 make defconfig
           grep -E 'airoha.*(xpon|gpon)' .config || true
+
+      - name: Verify GPON-A config
+        run: |
+          grep -q '^CONFIG_PACKAGE_kmod-airoha-xpon-en757x=y' .config
+          grep -q '^CONFIG_TARGET_DEVICE_airoha_an7581_DEVICE_nokia_xg-040g-md-ubi=y' .config
 
       - name: Download sources
         continue-on-error: true
