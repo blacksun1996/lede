@@ -61,6 +61,8 @@ jobs:
 
       - name: Configure GPON-A
         run: |
+          mkdir -p staging_dir/host
+          touch staging_dir/host/.prereq-build
           cat > .config <<'EOF'
           CONFIG_TARGET_airoha=y
           CONFIG_TARGET_airoha_an7581=y
