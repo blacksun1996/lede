@@ -82,6 +82,12 @@ jobs:
           FORCE=1 make defconfig
           grep -E 'TARGET_DEVICE_airoha_an7581|airoha.*(xpon|gpon)|kmod-i2c-core' .config || true
 
+      - name: Build host tools
+        run: |
+          mkdir -p staging_dir/host
+          touch staging_dir/host/.prereq-build
+          make -j"$(nproc)" tools/install
+
       - name: Point feeds at GitHub mirrors
         run: |
           cat > feeds.conf.default <<'EOF'
