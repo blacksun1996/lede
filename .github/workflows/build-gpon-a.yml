@@ -86,6 +86,9 @@ jobs:
         run: |
           mkdir -p staging_dir/host
           touch staging_dir/host/.prereq-build
+          make -C tools/mkhash compile install
+          echo "$PWD/staging_dir/host/bin" >> "$GITHUB_PATH"
+          export PATH="$PWD/staging_dir/host/bin:$PATH"
           make -j"$(nproc)" tools/install
 
       - name: Point feeds at GitHub mirrors
